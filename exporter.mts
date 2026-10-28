@@ -17,7 +17,7 @@ const MULTICA = ['/Applications/Multica.app/Contents/Resources/app.asar.unpacked
   '--profile', 'desktop-api.multica.ai', '--workspace-id', '2c231b1f-bcb0-4583-a81c-79135be12a42'];
 const GENERES = ['scripts', 'skills', 'modeles-client', 'agents', 'autopilots', 'multica', 'claude-code', 'secrets', 'racine/CLAUDE.md'];
 const IGNORES = new Set(['node_modules', '.git', 'dist', '.DS_Store']);
-const AUTOMATISATION_FLUX = /^(flux-(?!dev$)|axflux-|shopify-exec|com\.axome\.flux-veille)/;
+const AUTOMATISATION_FLUX = /^(flux-(?!dev$)|axflux-|shopify-(exec|auth|garde)|com\.axome\.flux-veille)/;
 
 const mc = (...args: string[]): unknown => JSON.parse(execFileSync(MULTICA[0], [...MULTICA.slice(1), ...args, '--output', 'json'], { cwd: '/tmp', encoding: 'utf8' }));
 const liste = (v: unknown): Record<string, unknown>[] => (Array.isArray(v) ? v : (Object.values(v as object).find(Array.isArray) ?? [])) as Record<string, unknown>[];
@@ -41,6 +41,11 @@ const claude = join(homedir(), '.claude');
 mkdirSync(join(KIT, 'claude-code'), { recursive: true });
 for (const f of ['CLAUDE.md', 'RTK.md']) if (existsSync(join(claude, f))) copyFileSync(join(claude, f), join(KIT, 'claude-code', f));
 const settings = JSON.parse(readFileSync(join(claude, 'settings.json'), 'utf8')) as Record<string, unknown>;
+// Les hooks qui lancent un outil exclu du kit (shopify-garde) n'y figurent pas non plus
+const hooks = settings.hooks as Record<string, { hooks: { command?: string }[] }[]> | undefined;
+for (const evenement of Object.keys(hooks ?? {})) {
+  hooks![evenement] = hooks![evenement].map((m) => ({ ...m, hooks: m.hooks.filter((h) => !AUTOMATISATION_FLUX.test(basename(h.command ?? ''))) })).filter((m) => m.hooks.length);
+}
 json('claude-code/settings.exemple.json', Object.fromEntries(['model', 'effortLevel', 'enabledPlugins', 'extraKnownMarketplaces', 'hooks'].filter((k) => k in settings).map((k) => [k, settings[k]])));
 json('claude-code/mcp-utilisateur.json', { mcpServers: {
   make: { type: 'stdio', command: `${INTERNAL}/bin/make-mcp` },

@@ -1,0 +1,9 @@
+{
+  "GIT_CONFIG_COUNT": "3",
+  "GIT_CONFIG_KEY_0": "url.push-interdit-aux-agents-multica://.pushInsteadOf",
+  "GIT_CONFIG_VALUE_0": "git@",
+  "GIT_CONFIG_KEY_1": "url.push-interdit-aux-agents-multica://.pushInsteadOf",
+  "GIT_CONFIG_VALUE_1": "https://",
+  "GIT_CONFIG_KEY_2": "url.push-interdit-aux-agents-multica://.pushInsteadOf",
+  "GIT_CONFIG_VALUE_2": "ssh://"
+}

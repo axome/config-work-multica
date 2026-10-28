@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "make": {
+      "type": "stdio",
+      "command": "/Volumes/Work/internal/bin/make-mcp"
+    },
+    "n8n": {
+      "type": "stdio",
+      "command": "/Volumes/Work/internal/bin/n8n-mcp"
+    }
+  }
+}

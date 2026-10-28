@@ -1,0 +1,62 @@
+# Contexte machine du client Exemple — à lire avant toute tâche.
+# Ne jamais mettre de valeur secrète ici : seulement l'emplacement des secrets.
+# Schéma complet commenté ; un nouveau client part de modeles-client/project.yaml.
+client: exemple                 # = slug = nom du dossier clients/<slug>
+name: Exemple
+updated: 2026-10-27
+
+monday:
+  workspace_id: 7022194
+  boards:
+    - { id: 18400000000, code: P-AXO-2610-001, name: "Exemple - Refonte" }
+
+multica:
+  project_id: 00000000-0000-0000-0000-000000000000
+
+shopify:
+  stores:
+    # role : prod | preprod | staging. phase : dev (boutique en construction) | live (en ligne).
+    - { domain: exemple-shop.myshopify.com, role: prod, phase: live, brand: "Exemple B2C" }
+    - domain: exemple-preprod.myshopify.com
+      role: preprod
+      phase: dev
+      aliases: [autre-domaine.myshopify.com]   # optionnels : aliases, public_domains, customer_account
+
+repos:
+  - path: app-exemple-store-locator        # dossier sous clients/<slug>/, null si pas encore cloné
+    remote: git@github.com:Zerance131/app-exemple-store-locator.git
+    kind: shopify-app                      # shopify-app | axflux | theme | checkout | scripts | make | n8n | app | backend | migration
+    purpose: "Store locator (metaobjects)"
+    stack: React Router + Prisma
+    api_version: "2026-04"
+    extensions: [ui-store-locator]
+    checks: npm run typecheck && npm run lint      # lancé par les agents avant de rendre
+    deploy: push main → GitHub Actions → prod      # ce qu'un push déclencherait
+    # optionnels : docs, url, note, branch, framework, hosting, theme
+
+  - path: scripts
+    remote: null                           # non versionné
+    kind: scripts
+    purpose: "Scripts one-shot"
+
+flux:
+  make:                                    # [] si le client n'est pas sur Make
+    zone: eu2.make.com
+    org_id: 1000000
+    team_id: 2000000
+    mcp: "serveur MCP `make` (jeton global lecture seule) : toujours filtrer sur org_id / team_id"
+    folders:
+      - { id: 400000, name: Exemple, store: exemple-shop.myshopify.com }
+    pattern: "Shopify → commandes → ERP ; ERP → stocks, statuts → Shopify"
+    naming: "[MARQUE][Export|Import] Source => Objet => Cible"
+  n8n: []                                  # ou { instance, repo, mcp, database, environments, flows[] }
+  # selon le client : axflux, middleware, sftp, oms, systems, erp, pim
+
+secrets:                                   # emplacements uniquement, jamais de valeur
+  - "MCP Make : jeton global lecture seule, <SECRETS>/make/default.env (Dropbox privé)"
+  - "app-exemple-store-locator/.env : SHOPIFY_API_KEY, SHOPIFY_API_SECRET (local)"
+
+guardrails:
+  - "Aucun push sans autorisation explicite d'Arthur."
+  - "Aucune écriture Admin API, ERP ou SFTP en prod sans dry-run puis validation explicite."
+  - "Make : n'agir que dans l'org 1000000 / team 2000000. Ne jamais modifier, activer ou désactiver un scénario actif sans demande explicite."

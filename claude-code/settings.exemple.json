@@ -1,0 +1,65 @@
+{
+  "model": "opus",
+  "effortLevel": "xhigh",
+  "enabledPlugins": {
+    "shopify-plugin@shopify-ai-toolkit": true,
+    "axome-shopify@axome": true,
+    "i-have-adhd@i-have-adhd": true,
+    "axome-git@axome": true
+  },
+  "extraKnownMarketplaces": {
+    "shopify-ai-toolkit": {
+      "source": {
+        "source": "github",
+        "repo": "Shopify/shopify-ai-toolkit"
+      }
+    },
+    "axome": {
+      "source": {
+        "source": "directory",
+        "path": "/Volumes/Work/internal/axome-claude-plugins"
+      }
+    },
+    "i-have-adhd": {
+      "source": {
+        "source": "github",
+        "repo": "ayghri/i-have-adhd"
+      }
+    }
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Glass.aiff",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "afplay /System/Library/Sounds/Ping.aiff",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "rtk hook claude"
+          }
+        ]
+      }
+    ]
+  }
+}

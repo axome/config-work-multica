@@ -1,0 +1,6 @@
+node_modules/
+.DS_Store
+# secrets/ ne contient que des modèles : tout fichier qui n'est pas un .exemple est refusé
+secrets/**
+!secrets/**/
+!secrets/**/*.exemple

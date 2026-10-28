@@ -1,0 +1,4 @@
+#!/bin/bash
+# Rapport de consommation des agents multica (tokens et coût estimé par agent, modèle, client, issue). Option : --jours N.
+set -euo pipefail
+exec node --no-warnings /Volumes/Work/internal/tools/build-tickets/src/usage.ts "$@"

@@ -1,0 +1,19 @@
+{
+  "name": "build-tickets",
+  "private": true,
+  "type": "module",
+  "description": "Import des tickets Monday BUILD du jour (selon Google Agenda) en issues multica",
+  "scripts": {
+    "import": "node src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "js-yaml": "^5.5.0",
+    "node-ical": "^0.27.3"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^26.6.5",
+    "typescript": "^7.0.2"
+  }
+}

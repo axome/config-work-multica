@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Monday",
+    "type": "url",
+    "icon": "link",
+    "description": "Lien vers l'item Monday d'origine",
+    "config": {
+      "options": null
+    },
+    "ancien_id": "f3237786-d033-482e-b14d-a52e6b959184"
+  }
+]

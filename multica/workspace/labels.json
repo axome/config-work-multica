@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Monday modifié",
+    "color": "#f59e0b",
+    "description": "Le ticket Monday a changé depuis l'import (statut, attribution ou nouvelle mise à jour) : voir la section en fin de description",
+    "resource_type": "issue",
+    "ancien_id": "4d5a0871-1f2d-4e9a-b149-cb434522f5d5"
+  },
+  {
+    "name": "RUN",
+    "color": "#ef4444",
+    "description": "Ticket de support (RUN) importé d'un board Monday RUN, par opposition aux tickets de projet (BUILD)",
+    "resource_type": "issue",
+    "ancien_id": "645ebe54-72d7-497d-adbf-428d5935a059"
+  }
+]

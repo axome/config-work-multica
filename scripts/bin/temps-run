@@ -1,0 +1,5 @@
+#!/bin/bash
+# Récapitulatif du temps chronométré par Arthur sur les boards RUN Monday (jour J par défaut), avec les tickets du jour sans temps.
+# Lecture seule côté Monday. Option : --date YYYY-MM-DD.
+set -euo pipefail
+exec node --no-warnings /Volumes/Work/internal/tools/build-tickets/src/temps-run.ts "$@"

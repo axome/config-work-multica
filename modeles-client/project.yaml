@@ -1,0 +1,31 @@
+# Contexte machine du client {{NAME}} — à lire avant toute tâche.
+# Ne jamais mettre de valeur secrète ici : seulement l'emplacement des secrets.
+# Créé par Mika ({{ISSUE}}) le {{DATE}} : chaque TODO est à compléter par Arthur avant la reprise automatique.
+client: {{SLUG}}
+name: {{NAME}}
+updated: {{DATE}}
+
+monday:
+  workspace_id: 7022194
+  boards:
+    - { id: {{BOARD_ID}}, code: {{CODE}}, name: "{{BOARD_NAME}}" }
+
+multica:
+  project_id: {{PROJECT_ID}}
+
+shopify:
+  stores:
+    # phase: dev (boutique en construction, future prod) ou live (en ligne)
+    - { domain: null, role: prod, phase: dev } # TODO domaine myshopify
+
+repos: [] # TODO : un bloc par repo (path, remote, kind, purpose, checks, deploy), voir un autre client pour le format
+
+flux:
+  make: [] # TODO : zone, org_id, team_id si le client a une organisation Make
+  n8n: [] # TODO : url de l'instance et clé dans .secrets/n8n/{{SLUG}}.env si le client est sur n8n
+
+secrets: [] # TODO : emplacements uniquement, jamais de valeur
+
+guardrails:
+  - "Aucun push sans autorisation explicite d'Arthur."
+  - "Aucune écriture Admin API, ERP ou SFTP en prod sans dry-run puis validation explicite."

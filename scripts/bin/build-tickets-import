@@ -1,0 +1,5 @@
+#!/bin/bash
+# Import des tickets Monday BUILD du jour (selon Google Agenda) en issues multica « À faire ».
+# Lecture seule côté Monday et agenda. Jour J uniquement. Options : --dry, --date YYYY-MM-DD, --sans-agenda, --projet, --run, --rafraichir, --nouveautes.
+set -euo pipefail
+exec node --no-warnings /Volumes/Work/internal/tools/build-tickets/src/index.ts "$@"

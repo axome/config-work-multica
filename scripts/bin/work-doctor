@@ -1,0 +1,4 @@
+#!/bin/bash
+# Contrôle de cohérence de /Volumes/Work (registre, project.yaml, projets multica, Monday, repos, secrets), en lecture seule.
+set -euo pipefail
+exec node --no-warnings /Volumes/Work/internal/tools/build-tickets/src/doctor.ts "$@"

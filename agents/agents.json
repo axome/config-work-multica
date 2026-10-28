@@ -1,0 +1,127 @@
+[
+  {
+    "name": "Mika",
+    "description": "Your workspace Chief of Staff. Mika turns goals into issues, coordinates agents, and helps build reusable workflows.",
+    "model": "claude-sonnet-5-5",
+    "thinking_level": "medium",
+    "max_concurrent_tasks": 3,
+    "permission_mode": "public_to",
+    "visibility": "workspace",
+    "systeme": "agent système multica (mika) : il existe déjà, ne reprendre que ses instructions, skills et MCP",
+    "skills": [
+      "axome-build-cycle",
+      "axome-client-context",
+      "axome-client-onboarding"
+    ],
+    "mcp": [
+      "make"
+    ],
+    "custom_env": "multica/verrou-anti-push.json",
+    "instructions": "agents/Mika.md"
+  },
+  {
+    "name": "shopify-dev",
+    "description": "Apps Shopify, extensions, Functions, Prisma",
+    "model": "claude-opus-5-5",
+    "thinking_level": "medium",
+    "max_concurrent_tasks": 2,
+    "permission_mode": "public_to",
+    "visibility": "workspace",
+    "skills": [
+      "axome-build-cycle",
+      "axome-client-context"
+    ],
+    "mcp": [
+      "shopify-dev-mcp"
+    ],
+    "custom_env": "multica/verrou-anti-push.json",
+    "instructions": "agents/shopify-dev.md"
+  },
+  {
+    "name": "flux-dev",
+    "description": "Flux axflux / n8n / Make / SFTP-ERP",
+    "model": "claude-opus-5-5",
+    "thinking_level": "high",
+    "max_concurrent_tasks": 6,
+    "permission_mode": "public_to",
+    "visibility": "workspace",
+    "skills": [
+      "axome-build-cycle",
+      "axome-client-context"
+    ],
+    "mcp": [
+      "make",
+      "n8n",
+      "shopify-dev-mcp"
+    ],
+    "custom_env": "multica/verrou-anti-push.json",
+    "instructions": "agents/flux-dev.md"
+  },
+  {
+    "name": "theme-dev",
+    "description": "Thèmes Shopify Liquid",
+    "model": "claude-sonnet-5-5",
+    "thinking_level": "medium",
+    "max_concurrent_tasks": 2,
+    "permission_mode": "public_to",
+    "visibility": "workspace",
+    "skills": [
+      "axome-build-cycle",
+      "axome-client-context"
+    ],
+    "mcp": [
+      "chrome-devtools",
+      "shopify-dev-mcp"
+    ],
+    "custom_env": "multica/verrou-anti-push.json",
+    "instructions": "agents/theme-dev.md"
+  },
+  {
+    "name": "migration",
+    "description": "Migrations de données vers Shopify",
+    "model": "claude-sonnet-5-5",
+    "thinking_level": "high",
+    "max_concurrent_tasks": 2,
+    "permission_mode": "public_to",
+    "visibility": "workspace",
+    "skills": [
+      "axome-build-cycle",
+      "axome-client-context"
+    ],
+    "mcp": [
+      "shopify-dev-mcp"
+    ],
+    "custom_env": "multica/verrou-anti-push.json",
+    "instructions": "agents/migration.md"
+  },
+  {
+    "name": "reviewer",
+    "description": "Relecture de code, checks, garde-fous",
+    "model": "claude-opus-5-5",
+    "thinking_level": "medium",
+    "max_concurrent_tasks": 4,
+    "permission_mode": "public_to",
+    "visibility": "workspace",
+    "skills": [
+      "axome-client-context"
+    ],
+    "mcp": [
+      "shopify-dev-mcp"
+    ],
+    "custom_env": "multica/verrou-anti-push.json",
+    "instructions": "agents/reviewer.md"
+  },
+  {
+    "name": "importeur",
+    "description": "Lance l'import des tickets Monday BUILD pour l'autopilot (Haiku, sans skill ni MCP)",
+    "model": "claude-haiku-5-5",
+    "thinking_level": "low",
+    "max_concurrent_tasks": 1,
+    "permission_mode": "public_to",
+    "visibility": "workspace",
+    "skills": [],
+    "mcp": [],
+    "custom_env": "multica/verrou-anti-push.json",
+    "instructions": "agents/importeur.md"
+  }
+]

@@ -1,0 +1,26 @@
+# Index des clients migrés dans /Volumes/Work.
+# Détail de chaque client : clients/<slug>/project.yaml
+# Exemple : trois profils de client (Make, n8n, client RUN). Clés obligatoires : slug, path, stores, monday_boards, multica_project_id.
+clients:
+  - slug: client-make
+    path: clients/client-make
+    stores: [client-make-shop.myshopify.com, client-make-b2b.myshopify.com]   # domaines myshopify, [] si aucun
+    monday_boards: [18400000000]                                         # boards projet (BUILD), [] si aucun
+    make: { zone: eu2.make.com, org_id: 1000000, team_id: 2000000 }      # organisation Make du client
+    multica_project_id: 00000000-0000-0000-0000-000000000001
+
+  - slug: client-n8n
+    path: clients/client-n8n
+    stores: [client-n8n.myshopify.com]
+    monday_boards: [18400000001]
+    n8n: https://client-n8n.n8n.example.com                              # instance n8n ; clé dans <SECRETS>/n8n/client-n8n.env
+    multica_project_id: 00000000-0000-0000-0000-000000000002
+
+  - slug: client-run
+    path: clients/client-run
+    stores: [client-run.myshopify.com]
+    monday_boards: []
+    run_aliases: ["Client Run"]      # valeur de la colonne « Client (Zendesk) » du board RUN global
+    # run_boards: [6000000000]       # board RUN dédié à ce client
+    # setup: AX-12                   # client en cours de configuration : ses tickets attendent
+    multica_project_id: 00000000-0000-0000-0000-000000000003

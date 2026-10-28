@@ -1,0 +1,4 @@
+#!/bin/bash
+# Liste les repos des organisations GitHub axome et Zerance131 qui correspondent à des mots-clés (lecture seule).
+set -euo pipefail
+exec node --no-warnings /Volumes/Work/internal/tools/build-tickets/src/github-repos.ts "$@"

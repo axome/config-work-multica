@@ -1,0 +1,38 @@
+#!/bin/bash
+# Serveur MCP n8n résolu par client (une instance n8n par client).
+# Remonte au project.yaml du dossier courant, charge N8N_API_URL / N8N_API_KEY depuis
+# <N8N_SECRETS_DIR>/<client>.env (Dropbox privé), puis lance n8n-mcp en stdio.
+# - Lecture seule par défaut. N8N_MCP_ALLOW_WRITE=true dans le .env du client pour autoriser l'écriture.
+# - Sans client ou sans .env : mode documentation seule (nœuds n8n), aucune instance contactée.
+set -euo pipefail
+
+ENV_DIR="${N8N_SECRETS_DIR:-$HOME/Library/CloudStorage/Dropbox/Ubuntu/home/.secrets/n8n}"
+
+client="${AXOME_CLIENT:-}"
+if [[ -z "$client" ]]; then
+  dir="$PWD"
+  while [[ "$dir" != "/" && ! -f "$dir/project.yaml" ]]; do dir="$(dirname "$dir")"; done
+  [[ -f "$dir/project.yaml" ]] && client="$(sed -nE 's/^client:[[:space:]]*([A-Za-z0-9_-]+).*/\1/p' "$dir/project.yaml" | head -1)"
+fi
+
+export MCP_MODE=stdio LOG_LEVEL=error DISABLE_CONSOLE_OUTPUT=true N8N_MCP_TELEMETRY_DISABLED=true
+
+env_file="$ENV_DIR/${client:-_none_}.env"
+if [[ -n "$client" && -f "$env_file" ]]; then
+  # Lecture ciblée des clés (le fichier n'est pas exécuté)
+  read_key() { sed -nE "s/^$1=[\"']?([^\"']*)[\"']?[[:space:]]*$/\1/p" "$env_file" | tail -1; }
+  url="$(read_key N8N_API_URL)"
+  key="$(read_key N8N_API_KEY)"
+  [[ -n "$url" && -n "$key" ]] || { echo "n8n-mcp: N8N_API_URL ou N8N_API_KEY manquant dans $env_file" >&2; exit 1; }
+  export N8N_API_URL="$url" N8N_API_KEY="$key"
+
+  if [[ "$(read_key N8N_MCP_ALLOW_WRITE)" != "true" ]]; then
+    # Recette « Read-Only Deployment » du README de n8n-mcp 2.93.0
+    export DISABLED_TOOLS="n8n_create_workflow,n8n_update_full_workflow,n8n_update_partial_workflow,n8n_delete_workflow,n8n_autofix_workflow,n8n_deploy_template,n8n_manage_credentials"
+    export DISABLED_TOOL_OPERATIONS="n8n_executions:delete;n8n_test_workflow:auto,trigger,pinned,direct,expose;n8n_evaluations:run,cancel;n8n_manage_folders:create,rename,move,delete;n8n_workflow_versions:delete,rollback,prune,expose;n8n_manage_agents:create,mutate,call,publish,unpublish,revert,delete,update_integration;n8n_manage_datatable:createTable,updateTable,deleteTable,insertRows,updateRows,upsertRows,deleteRows,addColumn,deleteColumn,renameColumn"
+  fi
+else
+  echo "n8n-mcp: pas d'instance n8n pour ce dossier (client: ${client:-aucun}) — documentation des nœuds uniquement" >&2
+fi
+
+exec npx -y n8n-mcp@2.93.0

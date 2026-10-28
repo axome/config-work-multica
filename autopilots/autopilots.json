@@ -1,0 +1,61 @@
+[
+  {
+    "title": "Récap du temps RUN (chronomètre Monday)",
+    "mode": "run_only",
+    "issue_title_template": "Temps RUN du {{date}}",
+    "status": "active",
+    "agent": "importeur",
+    "prompt": "autopilots/recap-du-temps-run-chronometre.md",
+    "triggers": [
+      {
+        "kind": "schedule",
+        "cron": "0 18 * * 1-5",
+        "timezone": "Europe/Paris",
+        "label": "18 h en semaine"
+      }
+    ]
+  },
+  {
+    "title": "Rapport hebdomadaire (consommation et cohérence)",
+    "mode": "create_issue",
+    "issue_title_template": "Consommation multica semaine du {{date}}",
+    "status": "active",
+    "agent": "importeur",
+    "prompt": "autopilots/rapport-hebdomadaire-consommation-et-coherence.md",
+    "triggers": [
+      {
+        "kind": "schedule",
+        "cron": "0 8 * * 1",
+        "timezone": "Europe/Paris",
+        "label": "Lundi 8 h"
+      }
+    ]
+  },
+  {
+    "title": "Import des tickets du jour (BUILD et RUN)",
+    "mode": "run_only",
+    "status": "active",
+    "agent": "importeur",
+    "prompt": "autopilots/import-des-tickets-du-jour.md",
+    "triggers": [
+      {
+        "kind": "schedule",
+        "cron": "30 7 * * 1-5",
+        "timezone": "Europe/Paris",
+        "label": "Matin 7 h 30"
+      },
+      {
+        "kind": "schedule",
+        "cron": "30 11 * * 1-5",
+        "timezone": "Europe/Paris",
+        "label": "Midi 11 h 30"
+      },
+      {
+        "kind": "schedule",
+        "cron": "30 15 * * 1-5",
+        "timezone": "Europe/Paris",
+        "label": "15 h 30 (aujourd'hui + demain)"
+      }
+    ]
+  }
+]

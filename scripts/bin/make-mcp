@@ -1,0 +1,41 @@
+#!/bin/bash
+# Serveur MCP Make (jeton global en lecture seule, Dropbox privé).
+# Charge MAKE_ZONE et MAKE_MCP_TOKEN depuis <MAKE_SECRETS_DIR>/default.env, ou depuis
+# <MAKE_SECRETS_DIR>/<client>.env, puis <zone>.env (flux.make.zone du project.yaml, ex. eu1.env), si ces fichiers existent pour le client du dossier courant
+# (client lu dans le project.yaml le plus proche). Relaie ensuite vers https://<zone>/mcp.
+# Le cloisonnement par client se fait via flux.make (org_id, team_id) du project.yaml.
+set -euo pipefail
+
+ENV_DIR="${MAKE_SECRETS_DIR:-$HOME/Library/CloudStorage/Dropbox/Ubuntu/home/.secrets/make}"
+
+fail() { echo "make-mcp: $*" >&2; exit 1; }
+
+client="${AXOME_CLIENT:-}"
+if [[ -z "$client" ]]; then
+  dir="$PWD"
+  while [[ "$dir" != "/" && ! -f "$dir/project.yaml" ]]; do dir="$(dirname "$dir")"; done
+  [[ -f "$dir/project.yaml" ]] && client="$(sed -nE 's/^client:[[:space:]]*([A-Za-z0-9_-]+).*/\1/p' "$dir/project.yaml" | head -1)"
+fi
+
+env_file="$ENV_DIR/default.env"
+# Zone du client (flux.make.zone du project.yaml) : <zone sans .make.com>.env, ex. eu1.env
+zone_name=""
+if [[ -f "${dir:-}/project.yaml" ]]; then
+  zone_name="$(sed -nE 's/^[[:space:]]+zone:[[:space:]]*([a-z0-9]+)\.make\.com.*/\1/p' "$dir/project.yaml" | head -1)"
+fi
+if [[ -n "$client" && -f "$ENV_DIR/$client.env" ]]; then env_file="$ENV_DIR/$client.env"
+elif [[ -n "$zone_name" && -f "$ENV_DIR/$zone_name.env" ]]; then env_file="$ENV_DIR/$zone_name.env"
+fi
+[[ -f "$env_file" ]] || fail "fichier $env_file introuvable"
+
+# Lecture ciblée des deux clés (le fichier n'est pas exécuté)
+read_key() { sed -nE "s/^$1=[\"']?([^\"']*)[\"']?[[:space:]]*$/\1/p" "$env_file" | tail -1; }
+zone="$(read_key MAKE_ZONE)"
+token="$(read_key MAKE_MCP_TOKEN)"
+[[ -n "$zone" ]] || fail "MAKE_ZONE manquant dans $env_file (ex: eu2.make.com)"
+[[ -n "$token" ]] || fail "MAKE_MCP_TOKEN manquant dans $env_file"
+
+# Le jeton passe par l'environnement, jamais par la ligne de commande (ps).
+# Relais maison sans OAuth : un jeton refusé donne une erreur, pas une fenêtre de navigateur.
+export MAKE_ZONE="$zone" MAKE_MCP_TOKEN="$token"
+exec node "$(dirname "$0")/make-mcp-relay.mjs"

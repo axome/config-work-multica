@@ -1,0 +1,35 @@
+[
+  {
+    "name": "axome-build-cycle",
+    "description": "Cycle BUILD d'une issue importée de Monday : En cours (analyse, code ou plan) → compte rendu → En relecture, puis retours d'Arthur (nouveau cycle, commit local, réponse Monday rédigée, terminé)",
+    "fichier": "skills/axome-build-cycle.md",
+    "agents": [
+      "Mika",
+      "shopify-dev",
+      "flux-dev",
+      "theme-dev",
+      "migration"
+    ]
+  },
+  {
+    "name": "axome-client-context",
+    "description": "Charge le contexte client Axome (registry, CLAUDE.md, project.yaml) et applique les garde-fous avant toute tâche",
+    "fichier": "skills/axome-client-context.md",
+    "agents": [
+      "Mika",
+      "shopify-dev",
+      "flux-dev",
+      "theme-dev",
+      "migration",
+      "reviewer"
+    ]
+  },
+  {
+    "name": "axome-client-onboarding",
+    "description": "Configuration d'un nouveau projet Monday : rattacher le board à un client existant si c'est évident, sinon créer le dossier client, chercher les repos GitHub et l'organisation Make, créer le projet multica, puis passer en Bloqué avec les actions pour Arthur",
+    "fichier": "skills/axome-client-onboarding.md",
+    "agents": [
+      "Mika"
+    ]
+  }
+]

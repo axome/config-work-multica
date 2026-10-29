@@ -250,6 +250,8 @@ for f in "$KIT"/multica/mcp/*.json; do M workspace mcp add "$(basename "$f" .jso
 M workspace mcp list --output json      # noter les ids
 ```
 
+`shopify-dev-mcp` est à version figée (`@shopify/dev-mcp@1.18.0`) : avec `@latest`, npx réinstalle le paquet au lancement, et plusieurs agents qui démarrent ensemble cassent son cache (`ENOTEMPTY` dans `~/.npm/_npx/`, MCP « indisponible » pour tous les agents ensuite). Pour monter de version : modifier le fichier, puis `M workspace mcp update <id> --server-config-file "$KIT/multica/mcp/shopify-dev-mcp.json"`, et la définition dans `exporter.mts`. Si le cache est déjà cassé : supprimer le dossier de `~/.npm/_npx/` dont le `package.json` cite `@shopify/dev-mcp`.
+
 ### 8.5 Skills
 Les sources sont dans `/Volumes/Work/internal/multica/skills/`, et ce sont elles qui font foi. `multica/skills.json` donne la description à publier et les agents de chaque skill.
 
@@ -376,5 +378,5 @@ cd /tmp && node --no-warnings <chemin du kit>/exporter.mts
 - **Pas de sauvegarde versionnée** pour `internal/`, `registry.yaml`, le `CLAUDE.md` racine et les fichiers de contexte des clients. Ce kit en est une copie à un instant donné, pas une sauvegarde.
 - **Les instructions des agents et les prompts des autopilots** n'ont pas d'autre source que multica. Le kit en garde une copie à chaque export.
 - **Un seul runtime, sur une seule machine** : si le Mac est éteint ou si Multica Desktop est fermé, aucun agent ne tourne.
-- **Le CLI multica 0.7.0 n'expose pas la définition des serveurs MCP du workspace** : celles du kit sont identiques à `~/.claude.json`.
+- **Le CLI multica 0.7.0 n'expose pas la définition des serveurs MCP du workspace** : celles du kit sont identiques à `~/.claude.json`, sauf `shopify-dev-mcp`, à version figée (section 8.4).
 - **Les données des clients ne sont pas dans le kit** (registre réel, dossiers, `project.yaml`). Un nouvel utilisateur part des exemples de `racine/` et ajoute ses clients (section 4). Seule exception : la section 4 de `documentation/organisation-du-travail.md` reproduit les fichiers réels du client Sidas (IP du middleware masquée). Ils ne contiennent aucun secret, mais des domaines, des ids Make et des remotes : à anonymiser avant de partager le kit hors d'Axome.

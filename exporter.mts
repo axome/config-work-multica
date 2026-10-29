@@ -59,11 +59,12 @@ json('multica/workspace/workspace.json', { name: ws.name, description: ws.descri
 json('multica/workspace/labels.json', liste(mc('label', 'list')).map((l) => ({ name: l.name, color: l.color, description: l.description, resource_type: l.resource_type, ancien_id: l.id })));
 json('multica/workspace/proprietes.json', liste(mc('property', 'list')).filter((p) => !p.archived).map((p) => ({ name: p.name, type: p.type, icon: p.icon, description: p.description, config: p.config, ancien_id: p.id })));
 
-// Bibliothèque MCP : le CLI n'expose pas les définitions, elles sont identiques à celles de ~/.claude.json
+// Bibliothèque MCP : le CLI n'expose pas les définitions, elles sont identiques à celles de ~/.claude.json, sauf
+// shopify-dev-mcp à version figée (avec @latest, npx réinstalle et casse son cache quand des agents démarrent ensemble)
 const MCP: Record<string, object> = {
   make: { type: 'stdio', command: `${INTERNAL}/bin/make-mcp` },
   n8n: { type: 'stdio', command: `${INTERNAL}/bin/n8n-mcp` },
-  'shopify-dev-mcp': { type: 'stdio', command: 'npx', args: ['-y', '@shopify/dev-mcp@latest'] },
+  'shopify-dev-mcp': { type: 'stdio', command: 'npx', args: ['-y', '@shopify/dev-mcp@1.18.0'] },
   'chrome-devtools': { type: 'stdio', command: 'npx', args: ['chrome-devtools-mcp@latest'] },
 };
 for (const s of liste(mc('workspace', 'mcp', 'list'))) {

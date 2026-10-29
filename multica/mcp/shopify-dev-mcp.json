@@ -3,6 +3,6 @@
   "command": "npx",
   "args": [
     "-y",
-    "@shopify/dev-mcp@latest"
+    "@shopify/dev-mcp@1.18.0"
   ]
 }
